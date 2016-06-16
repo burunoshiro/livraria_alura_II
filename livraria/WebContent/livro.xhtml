@@ -29,12 +29,12 @@
 
 		<fieldset>
 			<legend>Dados do autor</legend>
-			<h:outputLabel value="Selecione Autor: " for="autor"/>
+			<h:outputLabel value="Selecione Autor: " for="autor" />
 			<h:selectOneMenu id="autor" >
 				<f:selectItems value="#{livroBean.autores}" var="autor" itemLabel="#{autor.nome}" 
 					itemValue="#{autor.id}" />
 			</h:selectOneMenu>
-			<h:commandButton value="Gravar Autor" />
+			<h:commandButton value="Gravar Autor" action="#{gravarAutor}" />
 		</fieldset>
 		
 		<h:commandButton value="Gravar" action="#{livroBean.gravar}" />
