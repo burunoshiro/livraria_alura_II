@@ -6,23 +6,29 @@
 
 <h:body>
 	<h1>Novo Livro</h1>
-	<h:form>
+	<h:form id="formulario">
+		<h:messages />	
 		<fieldset>
 			<legend>Dados do Livro</legend>
 			<h:panelGrid columns="2">
 
 				<h:outputLabel value="Titulo:" for="titulo" />
-				<h:inputText id="titulo" value="#{livroBean.livro.titulo}" />
+				<h:inputText id="titulo" value="#{livroBean.livro.titulo}" required="true" requiredMessage="Título obrigatório" 
+					validatorMessage="Título não pode ser superior a 40">
+					<f:validateLength maximum="40" />
+				</h:inputText>
 
 				<h:outputLabel value="ISBN:" for="isbn" />
-				<h:inputText id="isbn" value="#{livroBean.livro.isbn}" />
+				<h:inputText id="isbn" value="#{livroBean.livro.isbn}" validator="#{livroBean.comecaComDigitoUm}" />
 
 				<h:outputLabel value="Preço:" for="preco" />
-				<h:inputText id="preco" value="#{livroBean.livro.preco}" />
+				<h:inputText id="preco" value="#{livroBean.livro.preco}" required="true"/>
 
 				<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
 				<h:inputText id="dataLancamento"
-					value="#{livroBean.livro.dataLancamento}" />
+					value="#{livroBean.livro.dataLancamento.time}" required="true" >
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />					
+				</h:inputText>
 
 			</h:panelGrid>
 		</fieldset>
@@ -30,11 +36,18 @@
 		<fieldset>
 			<legend>Dados do autor</legend>
 			<h:outputLabel value="Selecione Autor: " for="autor" />
-			<h:selectOneMenu id="autor" >
+			<h:selectOneMenu id="autor" value="#{livroBean.autorId}">
 				<f:selectItems value="#{livroBean.autores}" var="autor" itemLabel="#{autor.nome}" 
 					itemValue="#{autor.id}" />
 			</h:selectOneMenu>
-			<h:commandButton value="Gravar Autor" action="#{gravarAutor}" />
+			<h:commandButton value="Gravar Autor" action="#{livroBean.gravarAutor}" />
+			
+			<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor">
+				<h:column>
+<!-- 					<f:facet name="header">Autor</f:facet> -->
+					<h:outputText value="#{autor.nome}"/>
+				</h:column>
+			</h:dataTable>
 		</fieldset>
 		
 		<h:commandButton value="Gravar" action="#{livroBean.gravar}" />
