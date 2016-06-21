@@ -1,28 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition template="_template.xhtml">
+	
+	<f:metadata>
+		<f:viewParam name="autorId" value="#{autorBean.autorId}" />
+		<f:viewAction action="#{autorBean.carregarAutorPeloId()}" if="#{param.autorId != null}" />
+	</f:metadata>
+	
 	<ui:define name="titulo">
 		Novo Autor
 	</ui:define>
 	<ui:define name="conteudo">
 		<h:form>
-		<h:messages/>
+<!-- 			<h:messages /> -->
 			<fieldset>
 				<legend>Dados do Autor</legend>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<h:outputLabel value="Nome:" for="nome" />
-					<h:inputText id="nome" value="#{autorBean.autor.nome}" required="true" requiredMessage="Digite o nome do autor" 
-					validatorMessage="Nome do autor deve ter entre 5 e 40 caracteres">
+					<h:inputText id="nome" value="#{autorBean.autor.nome}"
+						required="true" requiredMessage="Digite o nome do autor"
+						validatorMessage="Nome do autor deve ter entre 5 e 40 caracteres">
 						<f:validateLength maximum="40" minimum="5" />
 					</h:inputText>
+					<h:message for="nome" id="messageNome" />
+					
+					<h:outputLabel value="Email: " for="email"/>
+					<h:inputText id="email" value="#{autorBean.autor.email}" required="true">
+						<f:passThroughAttribute name="type" value="email" />
+					</h:inputText>
+					<h:message for="email" id="messageEmail"/>
+					
+					<h:outputLabel value=""/>
 					<h:commandButton value="Gravar" action="#{autorBean.gravar}" />
+					
 				</h:panelGrid>
 			</fieldset>
+		</h:form>
+		<h:form>
+			<h:dataTable value="#{autorBean.listaAutores}" var="autor">
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{autor.nome}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Alteração</f:facet>
+					<h:commandLink value="Alterar" immediate="true"
+						action="#{autorBean.alterar(autor)}">
+						<!-- 						<f:setPropertyActionListener target="#{autorBean.autor}" value="#{autor}"/> -->
+					</h:commandLink>
+				</h:column>
+				<h:column>
+					<f:facet name="header">Remoção</f:facet>
+					<h:commandLink value="Remover" action="#{autorBean.remover(autor)}" />
+				</h:column>
+			</h:dataTable>
 		</h:form>
 	</ui:define>
 	<ui:define name="rodape">
