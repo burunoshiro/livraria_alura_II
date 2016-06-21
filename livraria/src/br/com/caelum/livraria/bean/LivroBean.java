@@ -16,7 +16,7 @@ import br.com.caelum.livraria.modelo.Livro;
 
 @ManagedBean
 @ViewScoped
-public class LivroBean implements Serializable{
+public class LivroBean implements Serializable {
 
 	private Livro livro = new Livro();
 	private Integer autorId;
@@ -37,41 +37,43 @@ public class LivroBean implements Serializable{
 		System.out.println("Gravando livro " + this.livro.getTitulo());
 
 		if (livro.getAutores().isEmpty()) {
-//			throw new RuntimeException("Livro deve ter pelo menos um Autor.");
-			FacesContext.getCurrentInstance().addMessage("autor", new FacesMessage("Livro deve ter pelo menos um Autor"));
+			// throw new RuntimeException("Livro deve ter pelo menos um
+			// Autor.");
+			FacesContext.getCurrentInstance().addMessage("autor",
+					new FacesMessage("Livro deve ter pelo menos um Autor"));
 		}
-
-		new DAO<Livro>(Livro.class).adiciona(this.livro);
+		
+		if(livro.getId() != null && livro.getId().intValue() > 0) {
+			System.out.println("Atualizando livro");
+			new DAO<Livro>(Livro.class).atualiza(this.livro);
+		}
+		else {
+			System.out.println("Salvando livro");
+			new DAO<Livro>(Livro.class).adiciona(this.livro);
+		}
+		
 	}
 
-	public List<Autor> getAutores(){
-		
+	public List<Autor> getAutores() {
 		return new DAO<Autor>(Autor.class).listaTodos();
-		
 	}
-	
+
 	public void gravarAutor() {
-		
 		Autor autor = new DAO<Autor>(Autor.class).buscaPorId(autorId);
 		livro.adicionaAutor(autor);
-		
 	}
-	
-	public List<Autor> getAutoresDoLivro(){
-		
+
+	public List<Autor> getAutoresDoLivro() {
 		return livro.getAutores();
-		
 	}
-	
+
 	public void comecaComDigitoUm(FacesContext fc, UIComponent component, Object value) throws ValidatorException {
-		
 		String valor = value.toString();
-		if(!valor.startsWith("1")) {
+		if (!valor.startsWith("1")) {
 			throw new ValidatorException(new FacesMessage("Deveria começar com 1"));
 		}
-		
 	}
-	
+
 	public List<Livro> getListaLivros() {
 		return new DAO<Livro>(Livro.class).listaTodos();
 	}
@@ -79,5 +81,20 @@ public class LivroBean implements Serializable{
 	public String formAutor() {
 		System.out.println("Chamando form autor");
 		return "autor?faces-redirect=true";
+	}
+
+	public void removerLivro(Livro livro) {
+		System.out.println("Removendo livro");
+		new DAO<Livro>(Livro.class).remove(livro);
+	}
+
+	public void alterarLivro(Livro livro) {
+		System.out.println("Buscando livro para alteração");
+		this.livro = livro;
+	}
+
+	public void removerAutor(Autor autor) {
+		System.out.println("Removendo autor: " + autor.getNome());
+		this.livro.getAutores().remove(autor);
 	}
 }
