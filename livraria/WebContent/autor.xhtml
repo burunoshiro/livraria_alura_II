@@ -1,64 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition template="_template.xhtml">
-	
+
 	<f:metadata>
 		<f:viewParam name="autorId" value="#{autorBean.autorId}" />
-		<f:viewAction action="#{autorBean.carregarAutorPeloId()}" if="#{param.autorId != null}" />
+		<f:viewAction action="#{autorBean.carregarAutorPeloId()}"
+			if="#{param.autorId != null}" />
 	</f:metadata>
-	
+
 	<ui:define name="titulo">
 		Novo Autor
 	</ui:define>
 	<ui:define name="conteudo">
 		<h:form>
-<!-- 			<h:messages /> -->
-			<fieldset>
-				<legend>Dados do Autor</legend>
+			<!-- 			<h:messages /> -->
+			<p:fieldset legend="Dados do Autor">
 				<h:panelGrid columns="3">
-					<h:outputLabel value="Nome:" for="nome" />
-					<h:inputText id="nome" value="#{autorBean.autor.nome}"
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{autorBean.autor.nome}"
 						required="true" requiredMessage="Digite o nome do autor"
-						validatorMessage="Nome do autor deve ter entre 5 e 40 caracteres">
+						validatorMessage="Nome do autor deve ter entre 5 e 40 caracteres"
+						placeholder="Digite o nome">
 						<f:validateLength maximum="40" minimum="5" />
-					</h:inputText>
-					<h:message for="nome" id="messageNome" />
-					
-					<h:outputLabel value="Email: " for="email"/>
-					<h:inputText id="email" value="#{autorBean.autor.email}" required="true">
+					</p:inputText>
+					<p:message for="nome" id="messageNome" />
+
+					<p:outputLabel value="Email: " for="email" />
+					<p:inputText id="email" value="#{autorBean.autor.email}"
+						required="true" validatorMessage="Email inválido">
 						<f:passThroughAttribute name="type" value="email" />
-					</h:inputText>
-					<h:message for="email" id="messageEmail"/>
-					
-					<h:outputLabel value=""/>
-					<h:commandButton value="Gravar" action="#{autorBean.gravar}" />
-					
+						<f:passThroughAttribute name="placeholder" value="Digite o email" />
+						<f:validateRegex pattern=".+@.+" />
+					</p:inputText>
+					<p:message for="email" id="messageEmail" />
+
+					<h:outputLabel value="" />
+					<p:commandButton value="Gravar" action="#{autorBean.gravar}"
+						update="@form :formTabelaAutores" process="@form" />
 				</h:panelGrid>
-			</fieldset>
+			</p:fieldset>
 		</h:form>
-		<h:form>
-			<h:dataTable value="#{autorBean.listaAutores}" var="autor">
-				<h:column>
-					<f:facet name="header">Nome</f:facet>
-					<h:outputText value="#{autor.nome}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">Alteração</f:facet>
-					<h:commandLink value="Alterar" immediate="true"
-						action="#{autorBean.alterar(autor)}">
-						<!-- 						<f:setPropertyActionListener target="#{autorBean.autor}" value="#{autor}"/> -->
-					</h:commandLink>
-				</h:column>
-				<h:column>
-					<f:facet name="header">Remoção</f:facet>
-					<h:commandLink value="Remover" action="#{autorBean.remover(autor)}" />
-				</h:column>
-			</h:dataTable>
+		<h:form id="formTabelaAutores">
+
+			<p:dataList value="#{autorBean.listaAutores}"
+				var="autor">
+				<f:facet name="header">Autores</f:facet>
+				
+				<h:commandLink styleClass="ui-icon ui-icon-pencil" style="float:left; margin-right: 10px" >
+					<f:setPropertyActionListener target="#{autorBean.autor}" value="#{autor}"/>
+				</h:commandLink>
+				
+				<h:commandLink styleClass="ui-icon ui-icon-trash" style="float:left; margin-right: 10px" action="#{autorBean.remover(autor)}" />
+		
+				#{autor.nome} - #{autor.email}
+				
+			</p:dataList>
+
 		</h:form>
 	</ui:define>
 	<ui:define name="rodape">
