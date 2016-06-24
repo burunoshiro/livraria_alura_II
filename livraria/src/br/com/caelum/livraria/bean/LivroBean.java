@@ -55,6 +55,7 @@ public class LivroBean implements Serializable {
 		else {
 			System.out.println("Salvando livro");
 			daoLivro.adiciona(this.livro);
+			this.livro = new Livro();
 		}
 		
 		this.listaLivros = daoLivro.listaTodos();
