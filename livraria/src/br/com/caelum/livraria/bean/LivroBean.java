@@ -18,7 +18,12 @@ import br.com.caelum.livraria.modelo.Livro;
 @ViewScoped
 public class LivroBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Livro livro = new Livro();
+	private List<Livro> listaLivros = null; //new ArrayList<Livro>();
 	private Integer autorId;
 
 	public Integer getAutorId() {
@@ -37,21 +42,22 @@ public class LivroBean implements Serializable {
 		System.out.println("Gravando livro " + this.livro.getTitulo());
 
 		if (livro.getAutores().isEmpty()) {
-			// throw new RuntimeException("Livro deve ter pelo menos um
-			// Autor.");
 			FacesContext.getCurrentInstance().addMessage("autor",
 					new FacesMessage("Livro deve ter pelo menos um Autor"));
 		}
 		
+		DAO<Livro> daoLivro = new DAO<Livro>(Livro.class);
+		
 		if(livro.getId() != null && livro.getId().intValue() > 0) {
 			System.out.println("Atualizando livro");
-			new DAO<Livro>(Livro.class).atualiza(this.livro);
+			daoLivro.atualiza(this.livro);
 		}
 		else {
 			System.out.println("Salvando livro");
-			new DAO<Livro>(Livro.class).adiciona(this.livro);
+			daoLivro.adiciona(this.livro);
 		}
 		
+		this.listaLivros = daoLivro.listaTodos();
 	}
 
 	public List<Autor> getAutores() {
@@ -75,7 +81,14 @@ public class LivroBean implements Serializable {
 	}
 
 	public List<Livro> getListaLivros() {
-		return new DAO<Livro>(Livro.class).listaTodos();
+		
+		if(listaLivros == null) {
+			DAO<Livro> daoLivro = null;
+			daoLivro = new DAO<Livro>(Livro.class);
+			listaLivros = daoLivro.listaTodos();
+		}
+		
+		return listaLivros;
 	}
 
 	public String formAutor() {
@@ -96,5 +109,9 @@ public class LivroBean implements Serializable {
 	public void removerAutor(Autor autor) {
 		System.out.println("Removendo autor: " + autor.getNome());
 		this.livro.getAutores().remove(autor);
+	}
+
+	public void setListaLivros(List<Livro> listaLivros) {
+		this.listaLivros = listaLivros;
 	}
 }
