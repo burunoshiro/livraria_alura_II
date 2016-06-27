@@ -78,17 +78,14 @@
 			</p:fieldset>
 
 			<br />
-			<p:commandButton value="Gravar" action="#{livroBean.gravar}">
-				<f:ajax execute="@form"
-					render="@form :formTabelaLivros" />
-			</p:commandButton>
-
+			<p:commandButton value="Gravar" action="#{livroBean.gravar}" process="@form" update="@form :formTabelaLivros:tabelaLivros" />
+			
 		</h:form>
 
 		<br />
 		<h:form id="formTabelaLivros">
 
-			<p:dataTable id="tabelaLivros" value="#{livroBean.listaLivros}" rows="5" paginator="true"
+			<p:dataTable id="tabelaLivros" value="#{livroBean.listaLivros}" 
 				var="livro">
 				<f:facet name="header">
 					Livros
@@ -110,11 +107,11 @@
 				</p:column>
 				<p:column headerText="Alteração">
 					<p:commandLink value="alterar"
-						action="#{livroBean.alterarLivro(livro)}" />
+						action="#{livroBean.alterarLivro(livro)}" update=":formulario"/>
 				</p:column>
 				<p:column headerText="Remoção">
 					<p:commandLink value="remover"
-						action="#{livroBean.removerLivro(livro)}" />
+						action="#{livroBean.removerLivro(livro)}" update="@form"/>
 				</p:column>
 			</p:dataTable>
 		
