@@ -11,7 +11,7 @@
 		Novo Livro
 	</ui:define>
 	<ui:define name="conteudo">
-		<h:form id="formulario">
+		<h:form id="formularioLivro">
 			<h:messages id="messages" />
 			<p:fieldset legend="Dados do Livro">
 				<p:panelGrid columns="2">
@@ -40,11 +40,6 @@
 						value="#{livroBean.livro.dataLancamento.time}"
 						pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"
 						mask="true" showOn="button" />
-					<!-- 					<p:inputText id="dataLancamento" -->
-					<!-- 						value="#{livroBean.livro.dataLancamento.time}" required="true"> -->
-					<!-- 						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" -->
-					<!-- 							timeZone="America/Sao_Paulo" /> -->
-					<!-- 					</p:inputText> -->
 
 				</p:panelGrid>
 			</p:fieldset>
@@ -107,11 +102,11 @@
 				</p:column>
 				<p:column headerText="Alteração">
 					<p:commandLink value="alterar"
-						action="#{livroBean.alterarLivro(livro)}" update=":formulario"/>
+						action="#{livroBean.alterarLivro(livro)}" update=":formularioLivro"/>
 				</p:column>
 				<p:column headerText="Remoção">
 					<p:commandLink value="remover"
-						action="#{livroBean.removerLivro(livro)}" update="@form"/>
+						action="#{livroBean.removerLivro(livro)}" update="tabelaLivros"/>
 				</p:column>
 			</p:dataTable>
 		
