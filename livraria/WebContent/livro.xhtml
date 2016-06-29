@@ -80,8 +80,8 @@
 		<br />
 		<h:form id="formTabelaLivros">
 
-			<p:dataTable id="tabelaLivros" value="#{livroBean.listaLivros}" 
-				var="livro" paginator="true" rows="7">
+			<p:dataTable id="tabelaLivros" value="#{livroBean.livroDataModel}" 
+				var="livro" paginator="true" rows="7" lazy="true">
 				<f:facet name="header">
 					Livros
 				</f:facet>
