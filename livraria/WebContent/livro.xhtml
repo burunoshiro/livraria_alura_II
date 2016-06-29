@@ -81,20 +81,23 @@
 		<h:form id="formTabelaLivros">
 
 			<p:dataTable id="tabelaLivros" value="#{livroBean.listaLivros}" 
-				var="livro">
+				var="livro" paginator="true" rows="7">
 				<f:facet name="header">
 					Livros
 				</f:facet>
-				<p:column headerText="Título" sortBy="#{livro.titulo}">
+				<p:column headerText="Título" sortBy="#{livro.titulo}" filterBy="#{livro.titulo}" >
 					<h:outputText value="#{livro.titulo}" />
 				</p:column>
-				<p:column headerText="ISBN" sortBy="#{livro.isbn}">
+				<p:column headerText="ISBN" sortBy="#{livro.isbn}" filterBy="#{livro.isbn}" filterMatchMode="contains">
 					<h:outputText value="#{livro.isbn}" />
 				</p:column>
-				<p:column headerText="Preço" sortBy="#{livro.preco}">
-					<h:outputText value="#{livro.preco}" />
+				<p:column headerText="Preço" sortBy="#{livro.preco}" filterby="#{livro.preco}" filterFunction="#{livroBean.precoEhMenor}" >
+					<h:outputText value="#{livro.preco}" >
+						<f:convertNumber type="currency" pattern="R$ #0.00"
+							currencySymbol="R$" locale="pt_BR" />
+					</h:outputText>
 				</p:column>
-				<p:column headerText="Data de Lançamento" sortBy="#{livro.dataLancamento.time}">
+				<p:column headerText="Data de Lançamento" sortBy="#{livro.dataLancamento.time}" filterBy="#{livro.dataLancamento.time}" filterMatchMode="contains" >
 					<h:outputText value="#{livro.dataLancamento.time}">
 						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
 							timeZone="America/Sao_Paulo" />
