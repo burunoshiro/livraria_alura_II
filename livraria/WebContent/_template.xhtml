@@ -10,9 +10,19 @@
 	<div id="cabecalho">
 		<h:graphicImage library="img" name="logo.png" />
 		
+		<p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" />
+		
 		<h:form rendered="#{usuarioLogado!= null}">
-            <p:commandLink value="Logout" action="#{loginBean.deslogar}" />
+		
+			<p:menuButton value="Menu">
+				<p:menuitem value="Livro" action="/livro.xhtml?faces-redirect=true" icon="fa fa-fw fa-edit" />
+				<p:menuitem value="Autor" action="/autor.xhtml?faces-redirect=true" icon="fa fa-fw fa-edit" />
+				<p:separator />
+				<p:menuitem value="Logout" action="#{loginBean.deslogar}" icon="fa fa-fw fa-sign-out" />
+			</p:menuButton>
+			
         </h:form>
+        
 		<h1>
 			<p:outputPanel>
 				<ui:insert name="titulo"></ui:insert>
