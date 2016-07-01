@@ -8,7 +8,17 @@
 </h:head>
 <h:body>
 	<div id="cabecalho">
+		
 		<h:graphicImage library="img" name="logo.png" />
+		
+		<h:form>
+			<p:themeSwitcher id="basic" style="width:165px" value="#{temaBean.tema}">
+				<f:selectItem itemLabel="Selecione tema" itemValue=""/>
+				<f:selectItem itemLabel="Aristo" itemValue="aristo"/>
+				<f:selectItem itemLabel="Vader" itemValue="vader"/>
+				<f:ajax />
+			</p:themeSwitcher>
+		</h:form>
 		
 		<p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" />
 		
